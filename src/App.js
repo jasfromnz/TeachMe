@@ -1,5 +1,6 @@
 import Header from './components/Header/Header';
 import HomePage from './pages/HomePage';
+import Form from './components/Form/Form';
 import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
@@ -51,27 +52,56 @@ function App() {
   async function handleSubmit (e) {
     e.preventDefault();
 
-    console.log('submitted!')
+    if (state.editMode) {
+      const {_id, user, title, link, rating, notes} = state.newPost;
+      try {
+        const posts = await fetch(`http://localhost:3001/api/posts/${_id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'Application/json'
+          },
+          body: JSON.stringify({user, title, link, rating, notes})
+        }).then(res => res.json());
 
-    const post = await fetch('http://localhost:3001/api/posts', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'Application/json'
-      },
-      body: JSON.stringify(state.newPost)
-    })
-    .then(res => res.json());
-
-    setState({
-      posts: [...state.posts, post],
-      newPost: {
-        user: "",
-        title: "",
-        link: "",
-        rating: 5,
-        notes: ""
+        setState({
+          posts,
+          newPost: {
+            user: "",
+            title: "",
+            link: "",
+            rating: 5,
+            notes: ""
+          },
+          editMode: false
+        });
+      } catch (error) {
+        console.log(error);
       }
-    });
+    } else {
+      try {
+        const post = await fetch('http://localhost:3001/api/posts', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'Application/json'
+          },
+          body: JSON.stringify(state.newPost)
+        })
+        .then(res => res.json());
+
+        setState({
+          posts: [...state.posts, post],
+          newPost: {
+            user: "",
+            title: "",
+            link: "",
+            rating: 5,
+            notes: ""
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   function handleEdit(id) {
@@ -94,31 +124,22 @@ function App() {
           />
         )}
       />
-      <Route path='/add'
+      <Route path='/add/:id'
         render={() => (
-          <form onSubmit={handleSubmit}>
-            <label>
-              <span>USER</span>
-              <input name="user" value={state.newPost.user} onChange={handleChange}/>
-            </label>
-            <label>
-              <span>TITLE</span>
-              <input name="title" value={state.newPost.title} onChange={handleChange}/>
-            </label>
-            <label>
-              <span>LINK</span>
-              <input name="link" value={state.newPost.link} onChange={handleChange}/>
-            </label>
-            <label>
-              <span>RATING</span>
-              <input name="rating" value={state.newPost.rating} onChange={handleChange}/>
-            </label>
-            <label>
-              <span>NOTES</span>
-              <input name="notes" value={state.newPost.notes} onChange={handleChange}/>
-            </label>
-            <button>Submit</button>
-          </form>
+          <Form 
+            newPost={state.newPost}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
+        )}
+      />
+      <Route exact path='/add'
+        render={() => (
+          <Form 
+            newPost={state.newPost}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
         )}
       />
     </div>
