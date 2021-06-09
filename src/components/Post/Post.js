@@ -7,7 +7,8 @@ const Post = (props) => (
         <a id="title" href={props.post.link}>{props.post.title}</a>
         <p id="rating">{props.post.rating}</p>
         <p id="notes">{props.post.notes}</p>
-        <Link className="edit" to={"/add/" + props.post._id} onClick={()=> props.handleEdit(props.post._id)}>✏️</Link>
+        <Link className="edit" to={"/edit/" + props.post._id} onClick={()=> props.handleEdit(props.post._id)}>✏️</Link>
+        <button onClick={() => props.handleDelete(props.post._id)}>🗑</button>
     </div>
 );
 

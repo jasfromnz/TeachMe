@@ -5,6 +5,7 @@ const HomePage = (props) => {
         <Posts 
             posts={props.posts}
             handleEdit={props.handleEdit}
+            handleDelete={props.handleDelete}
         />
     )
 }

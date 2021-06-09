@@ -8,6 +8,7 @@ const Posts = (props) => {
                     post={post}
                     key={idx}
                     handleEdit={props.handleEdit}
+                    handleDelete={props.handleDelete}
                 />
             ))}
         </div>

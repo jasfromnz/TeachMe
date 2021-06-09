@@ -113,6 +113,20 @@ function App() {
     }));
   }
 
+  async function handleDelete(id) {
+    try {
+      const posts = await fetch(`http://localhost:3001/api/posts/${id}`, {
+        method: 'DELETE'
+      }).then(res => res.json());
+      setState(prevState => ({
+        ...prevState,
+        posts,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="App">
       <Header />
@@ -121,10 +135,11 @@ function App() {
           <HomePage
             posts={state.posts}
             handleEdit={handleEdit}
+            handleDelete={handleDelete}
           />
         )}
       />
-      <Route path='/add/:id'
+      <Route path='/edit/:id'
         render={() => (
           <Form 
             newPost={state.newPost}
