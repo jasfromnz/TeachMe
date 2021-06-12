@@ -6,17 +6,18 @@ import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { auth } from './services/firebase';
 import './App.css';
+import { fetchPosts, createPost, updatePost, deletePost } from './services/api-service';
 
 function App() {
 
   const [state, setState] = useState({
     posts: [],
     newPost: {
-      uid: "",
       title: "",
       link: "",
       rating: 5,
-      notes: ""
+      notes: "",
+      uid: ""
     },
     editMode: false
   });
@@ -26,15 +27,16 @@ function App() {
   });
 
   useEffect(() => {
-    function getAppData() {
-      fetch('http://localhost:3001/api/posts')
-      .then(res => res.json())
-      .then(data => 
+    async function getAppData() {
+      try {
+        const posts = await fetchPosts();
         setState(prevState => ({
           ...prevState,
-          posts: data
-        }))
-      ).catch(err => console.log(err))
+          posts
+        }));
+      } catch(err) {
+        console.log(err)
+      }
     }
     getAppData();
     
@@ -44,7 +46,7 @@ function App() {
     return function() {
       unsubscribe();
     }
-  }, []);
+  }, [userState.user]);
 
   function handleChange (e) {
     setState(prevState => ({
@@ -57,62 +59,53 @@ function App() {
   }
 
   async function handleSubmit (e) {
+    if(!userState.user) return;
+    
     e.preventDefault();
 
     if (state.editMode) {
-      const {_id, uid, title, link, rating, notes} = state.newPost;
       try {
-        const posts = await fetch(`http://localhost:3001/api/posts/${_id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-type': 'Application/json'
-          },
-          body: JSON.stringify({uid, title, link, rating, notes})
-        }).then(res => res.json());
+        const posts = await updatePost(state.newPost)
 
-        setState({
+        setState(prevState => ({
+          ...prevState,
           posts,
           newPost: {
-            uid: "",
             title: "",
             link: "",
             rating: 5,
-            notes: ""
+            notes: "",
+            uid: ""
           },
           editMode: false
-        });
+        }));
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
-        const post = await fetch('http://localhost:3001/api/posts', {
-          method: 'POST',
-          headers: {
-            'Content-type': 'Application/json'
-          },
-          body: JSON.stringify(state.newPost)
-        })
-        .then(res => res.json());
+        const posts = await createPost(state.newPost, userState.user.uid);
 
-        setState({
-          posts: [...state.posts, post],
+        setState(prevState => ({
+          ...prevState,
+          posts,
           newPost: {
-            uid: "",
             title: "",
             link: "",
             rating: 5,
             notes: ""
           }
-        });
+        }));
       } catch (error) {
         console.log(error);
       }
     }
   }
 
-  function handleEdit(id) {
-    const postToEdit = state.posts.find(post => post._id === id);
+  
+
+  function handleEdit(postId) {
+    const postToEdit = state.posts.find(post => post._id === postId);
     setState(prevState => ({
       ...prevState,
       newPost: postToEdit,
@@ -120,11 +113,9 @@ function App() {
     }));
   }
 
-  async function handleDelete(id) {
+  async function handleDelete(postId) {
     try {
-      const posts = await fetch(`http://localhost:3001/api/posts/${id}`, {
-        method: 'DELETE'
-      }).then(res => res.json());
+      const posts = await deletePost(postId);
       setState(prevState => ({
         ...prevState,
         posts,
@@ -164,11 +155,13 @@ function App() {
           />
         )}
       />
-      <Route path='/user/:id'
+      <Route path='/user'
         render={() => (
           <UserPage 
+            user={userState.state}
             posts={state.posts}
-            user={userState.user}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
           />
         )}
       />
