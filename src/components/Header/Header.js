@@ -7,8 +7,15 @@ const Header = (props) => {
             <h1>TeachMe</h1>
             <nav>
                 <a href="/">Home</a>
-                <p onClick={login}>Login</p>
-                <p onClick={logout}>Logout</p>
+                { props.user ?
+                <> 
+                    <img src={props.user.photoURL} alt=""></img>
+                    <a href={`/user/${props.user.uid}`}>{props.user.displayName}</a>
+                    <button onClick={logout}>Logout</button>
+                </>
+                :
+                <button onClick={login}>Login</button>
+                }
             </nav>
         </header>
     )

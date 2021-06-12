@@ -1,28 +1,28 @@
 import Header from './components/Header/Header';
 import HomePage from './pages/HomePage';
+import UserPage from './pages/UserPage';
 import Form from './components/Form/Form';
 import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { auth } from './services/firebase';
 import './App.css';
 
 function App() {
 
   const [state, setState] = useState({
-    posts: [{
-      user: "jasmine",
-      title: "My First Post",
-      link: "https://www.codecademy.com/",
-      rating: 3,
-      notes: "This is my first resource!"
-    }],
+    posts: [],
     newPost: {
-      user: "",
+      uid: "",
       title: "",
       link: "",
       rating: 5,
       notes: ""
     },
     editMode: false
+  });
+
+  const [userState, setUserState] = useState({
+    user: null,
   });
 
   useEffect(() => {
@@ -37,6 +37,13 @@ function App() {
       ).catch(err => console.log(err))
     }
     getAppData();
+    
+    const unsubscribe = auth.onAuthStateChanged((user) => setUserState({ user }));
+    
+    // clean up function
+    return function() {
+      unsubscribe();
+    }
   }, []);
 
   function handleChange (e) {
@@ -53,20 +60,20 @@ function App() {
     e.preventDefault();
 
     if (state.editMode) {
-      const {_id, user, title, link, rating, notes} = state.newPost;
+      const {_id, uid, title, link, rating, notes} = state.newPost;
       try {
         const posts = await fetch(`http://localhost:3001/api/posts/${_id}`, {
           method: 'PUT',
           headers: {
             'Content-type': 'Application/json'
           },
-          body: JSON.stringify({user, title, link, rating, notes})
+          body: JSON.stringify({uid, title, link, rating, notes})
         }).then(res => res.json());
 
         setState({
           posts,
           newPost: {
-            user: "",
+            uid: "",
             title: "",
             link: "",
             rating: 5,
@@ -91,7 +98,7 @@ function App() {
         setState({
           posts: [...state.posts, post],
           newPost: {
-            user: "",
+            uid: "",
             title: "",
             link: "",
             rating: 5,
@@ -129,7 +136,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      <Header user={userState.user} />
       <Route exact path='/'
         render={() => (
           <HomePage
@@ -154,6 +161,14 @@ function App() {
             newPost={state.newPost}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+          />
+        )}
+      />
+      <Route path='/user/:id'
+        render={() => (
+          <UserPage 
+            posts={state.posts}
+            user={userState.user}
           />
         )}
       />
