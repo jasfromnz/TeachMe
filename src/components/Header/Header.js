@@ -10,7 +10,7 @@ const Header = (props) => {
                 { props.user ?
                 <> 
                     <img src={props.user.photoURL} alt=""></img>
-                    <a href={`/user/${props.user.uid}`}>{props.user.displayName}</a>
+                    <a href={'/user'}>{props.user.displayName}</a>
                     <button onClick={logout}>Logout</button>
                 </>
                 :

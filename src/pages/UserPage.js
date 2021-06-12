@@ -10,13 +10,10 @@ const UserPage = (props) => {
         }
         return userPosts;
     };
-
-    console.log(props.user)
-    let userPosts = getUserPosts(props.posts, props.user.uid)
     
     return (
         <Posts 
-            posts={userPosts}
+            posts={props.user ? getUserPosts(props.posts, props.user.uid) : []}
             handleEdit={props.handleEdit}
             handleDelete={props.handleDelete}
         />

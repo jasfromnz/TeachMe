@@ -17,13 +17,9 @@ function App() {
       link: "",
       rating: 5,
       notes: "",
-      uid: ""
+      user: null,
     },
     editMode: false
-  });
-
-  const [userState, setUserState] = useState({
-    user: null,
   });
 
   useEffect(() => {
@@ -40,13 +36,25 @@ function App() {
     }
     getAppData();
     
-    const unsubscribe = auth.onAuthStateChanged((user) => setUserState({ user }));
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if(user) {
+        setState((prevState) => ({
+          ...prevState,
+          user
+        }));
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          user
+        }));
+      }
+    });
     
     // clean up function
     return function() {
       unsubscribe();
     }
-  }, [userState.user]);
+  }, [state.user]);
 
   function handleChange (e) {
     setState(prevState => ({
@@ -59,7 +67,7 @@ function App() {
   }
 
   async function handleSubmit (e) {
-    if(!userState.user) return;
+    if(!state.user) return;
     
     e.preventDefault();
 
@@ -84,7 +92,7 @@ function App() {
       }
     } else {
       try {
-        const posts = await createPost(state.newPost, userState.user.uid);
+        const posts = await createPost(state.newPost, state.user.uid);
 
         setState(prevState => ({
           ...prevState,
@@ -127,10 +135,21 @@ function App() {
 
   return (
     <div className="App">
-      <Header user={userState.user} />
+      <Header user={state.user} />
       <Route exact path='/'
         render={() => (
           <HomePage
+            posts={state.posts}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+        )}
+      />
+      <Route path='/user'
+        render={(props) => (
+          <UserPage
+            {...props}
+            user={state.user}
             posts={state.posts}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
@@ -152,16 +171,6 @@ function App() {
             newPost={state.newPost}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
-          />
-        )}
-      />
-      <Route path='/user'
-        render={() => (
-          <UserPage 
-            user={userState.state}
-            posts={state.posts}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
           />
         )}
       />
