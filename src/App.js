@@ -6,6 +6,8 @@ import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { auth } from './services/firebase';
 import './App.css';
+import M from 'materialize-css';
+import 'materialize-css/dist/css/materialize.min.css';
 import { fetchPosts, createPost, updatePost, deletePost } from './services/api-service';
 
 function App() {

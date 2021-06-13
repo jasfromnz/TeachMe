@@ -1,7 +1,38 @@
 .post {
-    border: 2px solid palevioletred;
+    border: 5px solid #ef5350;
     padding: 0 0 20px 0;
     margin: 20px;
+}
+
+.user {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    background-color: #ef5350;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+}
+
+.body > * {
+    width: fit-content;
+    justify-self: left;
+    margin: 10px 0 0 10px;
+}
+
+#name {
+    padding-top: 15px;
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+
+img {
+    height: 60px;
+    padding: 10px;
+    margin: 0;
 }
 
 #title {

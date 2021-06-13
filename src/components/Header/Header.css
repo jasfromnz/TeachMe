@@ -1,29 +1,19 @@
-header {
-    background-color: mistyrose;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0px;
-    padding: 10px;
-    height: 8vh;
-}
-
-nav {
-    display: flex;
-    height: 100%;
-    width: 50vw;
-    justify-content: flex-end;
-    align-items: baseline;
-}
-
-a {
-    background-color: mistyrose;
-    padding: 10px;
-    border: 2px solid palevioletred;
+h1.left {
+    font-size: 3.5rem;
+    margin: 0;
+    padding-left: 10px;
 }
 
 img {
-    width: 30px;
     border-radius: 50%;
-    padding: 5px;
+    height: 3rem;
+    margin-top: .7rem;
+}
+
+button.login {
+    background-color: #b71c1c;
+    color: white;
+    text-transform: none;
+    font-size: 1rem;
+    margin-right: 10px;
 }
