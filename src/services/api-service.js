@@ -6,7 +6,8 @@ function fetchPosts() {
     return fetch(BASE_URL).then(res => res.json());
 }       
 
-function createPost(data, uid) {
+function createPost(data, userInfo) {
+  console.log(userInfo);
     return fetch(BASE_URL, {
       method: 'POST',
       headers: {
@@ -14,7 +15,7 @@ function createPost(data, uid) {
       },
       body: JSON.stringify(
           {...data, 
-            uid})
+            user: userInfo})
     })
     .then(res => res.json());
   }

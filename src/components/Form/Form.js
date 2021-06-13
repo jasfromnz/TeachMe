@@ -3,10 +3,6 @@ const Form = (props) => {
         <div className="form">
             <form onSubmit={props.handleSubmit}>
                 <label>
-                <span>USER</span>
-                <input name="user" value={props.newPost.user} onChange={props.handleChange}/>
-                </label>
-                <label>
                 <span>TITLE</span>
                 <input name="title" value={props.newPost.title} onChange={props.handleChange}/>
                 </label>

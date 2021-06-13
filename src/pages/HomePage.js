@@ -6,6 +6,7 @@ const HomePage = (props) => {
             posts={props.posts}
             handleEdit={props.handleEdit}
             handleDelete={props.handleDelete}
+            user={props.user}
         />
     )
 }

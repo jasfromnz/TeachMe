@@ -83,7 +83,7 @@ function App() {
             link: "",
             rating: 5,
             notes: "",
-            uid: ""
+            user: null,
           },
           editMode: false
         }));
@@ -92,7 +92,7 @@ function App() {
       }
     } else {
       try {
-        const posts = await createPost(state.newPost, state.user.uid);
+        const posts = await createPost(state.newPost, state.user);
 
         setState(prevState => ({
           ...prevState,
@@ -101,7 +101,8 @@ function App() {
             title: "",
             link: "",
             rating: 5,
-            notes: ""
+            notes: "",
+            user: null
           }
         }));
       } catch (error) {
@@ -142,6 +143,7 @@ function App() {
             posts={state.posts}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
+            user={state.user}
           />
         )}
       />
