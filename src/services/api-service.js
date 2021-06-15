@@ -1,4 +1,4 @@
-const host = 'https://teachme-resources-backend.herokuapp.com/api/skills';
+const host = 'https://teachme-resources-backend.herokuapp.com/';
 
 const BASE_URL = host + '/api/posts';
 
