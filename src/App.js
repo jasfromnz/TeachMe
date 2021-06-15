@@ -2,12 +2,15 @@ import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
 import UserPage from './pages/UserPage';
 import Form from './components/Form/Form';
+import Footer from './components/Footer/Footer';
+
 import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { auth } from './services/firebase';
-import './App.css';
-import 'materialize-css/dist/css/materialize.min.css';
 import { fetchPosts, createPost, updatePost, deletePost } from './services/api-service';
+
+import 'materialize-css/dist/css/materialize.min.css';
+import './App.css';
 
 function App() {
 
@@ -178,6 +181,7 @@ function App() {
           />
         )}
       />
+      <Footer />
     </div>
   );
 }
