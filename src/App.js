@@ -1,12 +1,11 @@
 import Header from './components/Header/Header';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage/HomePage';
 import UserPage from './pages/UserPage';
 import Form from './components/Form/Form';
 import { Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { auth } from './services/firebase';
 import './App.css';
-import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 import { fetchPosts, createPost, updatePost, deletePost } from './services/api-service';
 
@@ -135,6 +134,7 @@ function App() {
       console.log(error);
     }
   }
+  
 
   return (
     <div className="App">

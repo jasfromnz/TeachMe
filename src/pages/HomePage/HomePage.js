@@ -1,4 +1,5 @@
-import Posts from '../components/Posts/Posts';
+import Posts from '../../components/Posts/Posts';
+import './HomePage.css';
 
 const HomePage = (props) => {
     return (

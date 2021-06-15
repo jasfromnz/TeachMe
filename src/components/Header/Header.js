@@ -1,7 +1,5 @@
 import { login, logout } from '../../services/firebase';
 import './Header.css';
-import M from 'materialize-css';
-import 'materialize-css/dist/css/materialize.min.css';
 
 const Header = (props) => {
     return (
@@ -15,7 +13,10 @@ const Header = (props) => {
                 { props.user ?
                     <>
                         <li>
-                            <a href={'/user'}>My Resources</a>
+                            <a href='/add'>Add Resource</a>
+                        </li>
+                        <li>
+                            <a href='/user'>My Resources</a>
                         </li>
                         <li>
                             <button className="login btn" onClick={logout}>Logout</button>

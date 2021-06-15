@@ -1,0 +1,48 @@
+div.form {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    margin: 10px 20px auto 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field {
+    height: 100px;
+    margin: 0;
+    padding: 0;
+}
+
+label.rating {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+span.rating {
+    font-size: 12px;
+    margin: 0;
+}
+
+#span {
+    width: 80vw;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+}
+
+select {
+    display: block;
+}
+
+.form > * {
+    width: 80vw;
+    max-width: 800px;
+}
+
+button {
+    width: 100px;
+    margin: 10px 0px auto auto;
+}

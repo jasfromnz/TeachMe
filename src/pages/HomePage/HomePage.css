@@ -1,0 +1,11 @@
+div.posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.post {
+    width: 80vw;
+    max-width: 800px;
+    margin: 10px auto 0px auto;
+}
